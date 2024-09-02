@@ -34,6 +34,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import './static/AlunosTable.css';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 const columns = [
     { id: 'nome', label: 'Nome', minWidth: 100 },
     { id: 'turma', label: 'Turma', minWidth: 100 },
@@ -55,7 +57,7 @@ function AlunosTable() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/alunoBuscaAtiva', {
+        fetch(rota_base+'/alunoBuscaAtiva', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

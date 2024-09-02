@@ -18,6 +18,8 @@ import dayjs from 'dayjs';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com';
+
 const cookies = new Cookies();
 
 function Tarefas() {
@@ -49,7 +51,7 @@ function Tarefas() {
     }, [id]);
 
     const fetchAluno = () => {
-        fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/${id}`, {
+        fetch(rota_base+`/alunoBuscaAtiva/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +81,7 @@ function Tarefas() {
             dataFinal: dataFinal,
         };
 
-        fetch(`http://127.0.0.1:8000/tarefas/${id}`, {
+        fetch(rota_base+`/tarefas/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ function Tarefas() {
             dataFinal: dataFinal
         };
 
-        fetch(`http://127.0.0.1:8000/tarefas/${id}/${editingTaskId}`, {
+        fetch(rota_base+`/tarefas/${id}/${editingTaskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -143,7 +145,7 @@ function Tarefas() {
     };
 
     const deleteTarefa = (tarefaId) => {
-        fetch(`http://127.0.0.1:8000/tarefas/${id}/${tarefaId}`, {
+        fetch(rota_base+`/tarefas/${id}/${tarefaId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

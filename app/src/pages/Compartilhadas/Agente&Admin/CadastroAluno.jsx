@@ -13,6 +13,10 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+
+
+const rota_base ='https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 // Ative o plugin
 dayjs.extend(customParseFormat);
 
@@ -80,7 +84,7 @@ const CadastroAluno = () => {
 
     try {
       // Envia os dados do formulário para a API usando fetch
-      const response = await fetch('http://127.0.0.1:8000/alunoBuscaAtiva', {
+      const response = await fetch(rota_base+'/alunoBuscaAtiva', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

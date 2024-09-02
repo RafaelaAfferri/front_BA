@@ -7,6 +7,8 @@ import Cookies from 'universal-cookie';
 
 import './static/Dashboard.css';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 export default function Dashboard() {
   const [casos, setCasos] = useState([]);
   const [statusData, setStatusData] = useState([]);
@@ -17,7 +19,7 @@ export default function Dashboard() {
   const token = cookies.get('token');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/casos', {
+    fetch(rota_base,'/casos', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

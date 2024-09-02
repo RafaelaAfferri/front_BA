@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logoBranco from '../../components/img/logoBranco.png';
 import Logout from '../../functions/Logout';
 
+
 const HeaderAgente = () => {
 
   const getLinkClass = (path) => {

@@ -37,6 +37,8 @@ const columns = [
 function createData(id, email, nome, permissao) {
   return { id, email, nome, permissao };
 }
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 
 const cookies = new Cookies();
 
@@ -56,7 +58,7 @@ function UserControl() {
   }, []);
 
   const fetchUsers = () => {
-    fetch('http://127.0.0.1:8000/usuarios', {
+    fetch(rota_base+'/usuarios', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +96,7 @@ function UserControl() {
   }, [searchTerm, filterPermissions, sortOption, users]);
 
   const handleDelete = id => {
-    fetch(`http://127.0.0.1:8000/usuarios/${id}`, {
+    fetch(rota_base+`/usuarios/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +115,7 @@ function UserControl() {
   };
   
   const handleSave = id => {
-    fetch(`http://127.0.0.1:8000/usuarios/${id}`, {
+    fetch(rota_base+`/usuarios/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

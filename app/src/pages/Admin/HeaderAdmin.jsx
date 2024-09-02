@@ -5,6 +5,8 @@ import logoBranco from '../../components/img/logoBranco.png';
 import Logout from '../../functions/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 
+
+
 const HeaderAdmin = () => {
   const location = useLocation();
 

@@ -15,6 +15,9 @@ import HeaderAgente from '../../Agente/HeaderAgente';
 
 import './static/DadosAluno.css';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
+
 dayjs.extend(customParseFormat);
 const cookies = new Cookies();
 
@@ -31,7 +34,7 @@ function DadosAluno() {
   }, [id]);
 
   const fetchAluno = () => {
-    fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/${id}`, {
+    fetch(rota_base+`/alunoBuscaAtiva/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +73,7 @@ function DadosAluno() {
   };
 
   const handleSave = () => {
-    fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/${id}`, {
+    fetch(rota_base+`/alunoBuscaAtiva/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

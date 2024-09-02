@@ -30,6 +30,9 @@ import ArticleIcon from '@mui/icons-material/Article';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import Typography from '@mui/material/Typography';
 
+
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 const columns = [
     { id: 'aluno', label: 'ALUNO', minWidth: 100, format: (aluno) => aluno.nome.toUpperCase(), Icon: ContactsIcon },
     { id: 'turma', label: 'TURMA', minWidth: 100, Icon: GroupsIcon },
@@ -55,7 +58,7 @@ function CasosTable() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/casos', {
+        fetch(rota_base+'/casos', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

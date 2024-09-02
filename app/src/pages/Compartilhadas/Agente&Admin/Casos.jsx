@@ -15,6 +15,9 @@ import { useParams } from 'react-router-dom';
 import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 
+
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+
 const cookies = new Cookies();
 
 export default function Casos() {
@@ -130,7 +133,7 @@ export default function Casos() {
     }, [idAluno, isIdAlunoLoaded]);
 
     function loadIdAluno(){
-        fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/caso/${id}`, {
+        fetch(rota_base+`/alunoBuscaAtiva/caso/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -153,7 +156,7 @@ export default function Casos() {
         if (!isIdAlunoLoaded){
             return;
         }
-        fetch(`http://127.0.0.1:8000/casos?aluno_id=${idAluno}`, {
+        fetch(rota_base+`/casos?aluno_id=${idAluno}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -181,7 +184,7 @@ export default function Casos() {
         if (!isIdAlunoLoaded){
             return;
         }
-        fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/${idAluno}`, {
+        fetch(rota_base+`/alunoBuscaAtiva/${idAluno}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -203,7 +206,7 @@ export default function Casos() {
 
     function loadUsuario(){
 
-        fetch('http://127.0.0.1:8000/usuarios-dados', {
+        fetch(rota_base+'/usuarios-dados', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -220,7 +223,7 @@ export default function Casos() {
 
 
     function gerarRealatorio() {
-        fetch('http://127.0.0.1:8000/casos/gerar-relatorio', {
+        fetch(rota_base+'/casos/gerar-relatorio', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -272,7 +275,7 @@ export default function Casos() {
         }
    
 
-        fetch('http://127.0.0.1:8000/casos/' + dataCasos._id , {
+        fetch(rota_base+'/casos/' + dataCasos._id , {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -305,7 +308,7 @@ export default function Casos() {
 
         };
         try {
-            const response = await fetch('http://127.0.0.1:8000/casos/' + dataCasos._id, {
+            const response = await fetch(rota_base+'/casos/' + dataCasos._id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -347,7 +350,7 @@ export default function Casos() {
 
         };
         try {
-            const response = await fetch('http://127.0.0.1:8000/casos/' + dataCasos._id, {
+            const response = await fetch(rota_base+'/casos/' + dataCasos._id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -387,7 +390,7 @@ export default function Casos() {
             atendimento: true,
         };
         try {
-            const response = await fetch('http://127.0.0.1:8000/casos/' + dataCasos._id, {
+            const response = await fetch(rota_base+'/casos/' + dataCasos._id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

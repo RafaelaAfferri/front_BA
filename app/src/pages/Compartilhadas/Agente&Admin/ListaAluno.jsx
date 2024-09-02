@@ -34,6 +34,8 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import './static/ListaAluno.css';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com';
+
 const columns = [
   { id: 'nome', label: 'NOME', minWidth: 100 },
   { id: 'turma', label: 'TURMA', minWidth: 100 },
@@ -66,7 +68,7 @@ function ListaAluno() {
   }, []);
 
   const fetchUsers = () => {
-    fetch('http://127.0.0.1:8000/alunoBuscaAtiva', {
+    fetch(rota_base+'/alunoBuscaAtiva', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +137,7 @@ function ListaAluno() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://127.0.0.1:8000/alunoBuscaAtiva/${id}`, {
+    fetch(rota_base+`/alunoBuscaAtiva/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
