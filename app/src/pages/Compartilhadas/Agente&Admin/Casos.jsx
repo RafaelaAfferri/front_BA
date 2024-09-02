@@ -216,6 +216,7 @@ export default function Casos() {
         }).then(response => response.json())
         .then(data => {
             setUsuario(data.nome)
+            console.log(usuario)
         })
 
     }
@@ -237,7 +238,7 @@ export default function Casos() {
                 "turma": dataAluno.turma,
                 "estudante": dataAluno.nome,
                 "ra": dataAluno.RA,
-                "usuario": usuario,
+                "usuario": (usuario,""),
                 "ligacoes": selectedRowsLig,
                 "visitas": selectedRowsVis,
                 "atendimentos": selectedRowsAtendimento
