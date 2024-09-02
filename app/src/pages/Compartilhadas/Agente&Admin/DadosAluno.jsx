@@ -2,12 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { Grid, TextField, Button, Paper, Box, Typography, Container } from '@mui/material';
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 
 import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 
 import './static/DadosAluno.css';
 
+dayjs.extend(customParseFormat);
 const cookies = new Cookies();
 
 function DadosAluno() {
@@ -37,6 +45,7 @@ function DadosAluno() {
         return response.json();
       })
       .then(data => {
+        data.dataNascimento = dayjs(data.dataNascimento, 'YYYY-MM-DD');
         setAluno(data);
         setEditedAluno(data);
       })
@@ -50,6 +59,13 @@ function DadosAluno() {
     setEditedAluno(prevAluno => ({
       ...prevAluno,
       [name]: value,
+    }));
+  };
+
+  const handleInputDateChange = (date) => {
+    setEditedAluno(prevAluno => ({
+      ...prevAluno,
+      dataNascimento: date,
     }));
   };
 
@@ -145,6 +161,36 @@ function DadosAluno() {
                             style: { backgroundColor: editMode ? 'white' : 'inherit' }
                           }}
                         />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          name="faltas"
+                          label="Faltas"
+                          variant="outlined"
+                          fullWidth
+                          value={editedAluno.faltas || ''}
+                          onChange={handleInputChange}
+                          InputProps={{
+                            readOnly: !editMode,
+                            style: { backgroundColor: editMode ? 'white' : 'inherit' }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DemoContainer components={['DateField', 'DateField']}>
+                            <DateField
+                              label="Data de Nascimento"
+                              value={editedAluno.dataNascimento}
+                              onChange={handleInputDateChange}
+                              format='DD/MM/YYYY'
+                              InputProps={{
+                                readOnly: !editMode,
+                                style: { backgroundColor: editMode ? 'white' : 'inherit' }
+                              }}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <TextField

@@ -69,6 +69,8 @@ function App() {
             <Route path="/alunos/:id" element={<DadosAluno />} />
             <Route path="/alunos/criar" element={<CadastroAluno />} />
             <Route path="/casos/:id" element={<Casos />} />
+            <Route path="/tarefas/:id" element={<AdicionarTarefa />} />
+
             </>
           )}
 

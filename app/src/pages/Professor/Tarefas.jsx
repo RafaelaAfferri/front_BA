@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import HeaderProfessor from './HeaderProfessor';
 import Cookies from 'universal-cookie';
-import { TextField, Button, Container, Typography, Card, CardContent, CardActions, IconButton, Select, MenuItem, InputLabel, Box, Paper, FormControl, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox } from '@mui/material';
+import { TextField, Button, Container, Typography, Card, CardContent, CardActions, IconButton, Select, MenuItem, InputLabel, Box, Paper, FormControl, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, Grid } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +10,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import './static/Tarefas.css';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/pt-br';
+import { DateField } from '@mui/x-date-pickers/DateField';
+import dayjs from 'dayjs';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
 
 const cookies = new Cookies();
 
@@ -18,6 +25,7 @@ function Tarefas() {
     const [tarefas, setTarefas] = useState([]);
     const [titulo, setTitulo] = useState('');
     const [observacoes, setObservacoes] = useState('');
+    const [dataFinal, setDataFinal] = useState(dayjs());
     const [status, setStatus] = useState('');
     const [showAddTask, setShowAddTask] = useState(false);
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -67,7 +75,8 @@ function Tarefas() {
         const novaTarefa = {
             titulo: titulo,
             observacoes: observacoes,
-            status: 'Em andamento'
+            status: 'Em andamento',
+            dataFinal: dataFinal,
         };
 
         fetch(`http://127.0.0.1:8000/tarefas/${id}`, {
@@ -88,6 +97,7 @@ function Tarefas() {
             setTarefas([...tarefas, data]);
             setTitulo('');
             setObservacoes('');
+            setDataFinal(dayjs());
             setShowAddTask(false);
             fetchAluno();
         })
@@ -100,7 +110,8 @@ function Tarefas() {
         const tarefaAtualizada = {
             titulo: titulo,
             observacoes: observacoes,
-            status: status
+            status: status,
+            dataFinal: dataFinal
         };
 
         fetch(`http://127.0.0.1:8000/tarefas/${id}/${editingTaskId}`, {
@@ -121,7 +132,7 @@ function Tarefas() {
             setTarefas(tarefas.map(tarefa => tarefa._id === editingTaskId ? data : tarefa));
             setTitulo('');
             setObservacoes('');
-            setStatus('Em andamento');
+            setDataFinal(dayjs());
             setEditingTaskId(null);
             setShowAddTask(false);
             fetchAluno();
@@ -158,6 +169,7 @@ function Tarefas() {
         setTitulo(tarefa.titulo);
         setObservacoes(tarefa.observacoes);
         setStatus(tarefa.status);
+        setDataFinal(dayjs(tarefa.dataFinal));
         setEditingTaskId(tarefa._id);
         setShowAddTask(true);
     };
@@ -166,6 +178,7 @@ function Tarefas() {
         setTitulo('');
         setObservacoes('');
         setStatus('');
+        setDataFinal(dayjs());
         setEditingTaskId(null);
         setShowAddTask(false);
     };
@@ -257,32 +270,48 @@ function Tarefas() {
                         }}
                         style={{ marginBottom: '20px' }}
                     >
-                        {showAddTask ? 'Cancelar' : 'Adicionar Matéria'}
+                        {showAddTask ? 'Cancelar' : 'Adicionar Tarefa'}
                     </Button>
                     <Typography variant="h6" component="h2" align="center" gutterBottom>
                         Lista de tarefas do aluno
                     </Typography>
                     {showAddTask && (
                         <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
-                            <TextField
-                                label="Matéria"
-                                variant="outlined"
-                                fullWidth
-                                required
-                                value={titulo}
-                                onChange={(e) => setTitulo(e.target.value)}
-                                style={{ marginBottom: '20px' }}
-                            />
-                            <TextField
-                                label="Tarefa"
-                                variant="outlined"
-                                fullWidth
-                                multiline
-                                rows={4}
-                                value={observacoes}
-                                onChange={(e) => setObservacoes(e.target.value)}
-                                style={{ marginBottom: '20px' }}
-                            />
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                
+                                    <TextField
+                                        label="Matéria"
+                                        variant="outlined"
+                                        fullWidth
+                                        required
+                                        value={titulo}
+                                        onChange={(e) => setTitulo(e.target.value)}
+                                        style={{ marginBottom: '20px' }}
+                                        />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                        <DateField
+                                            label="Prazo Final"
+                                            value={dataFinal}
+                                            onChange={(newValue) => setDataFinal(newValue)}
+                                        />
+                                    </LocalizationProvider>
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                    label="Tarefa"
+                                    variant="outlined"
+                                    fullWidth
+                                    multiline
+                                    rows={4}
+                                    value={observacoes}
+                                    onChange={(e) => setObservacoes(e.target.value)}
+                                    style={{ marginBottom: '20px' }}
+                                    />
+                                </Grid>
+                            </Grid>
                             {editingTaskId && (
                                 <>
                                     <InputLabel id="status-label">Status</InputLabel>
@@ -297,6 +326,8 @@ function Tarefas() {
                                         <MenuItem value="Em andamento">Em andamento</MenuItem>
                                         <MenuItem value="Finalizado">Finalizado</MenuItem>
                                     </Select>
+                                    
+
                                 </>
                             )}
                             <Button type="submit" variant="contained" color="primary" startIcon={editingTaskId ? <SaveIcon /> : null}>
@@ -314,10 +345,11 @@ function Tarefas() {
                                         <Paper elevation={2} className="tarefa-container">
                                             <Typography variant='body1'>{tarefa.observacoes}</Typography>
                                         </Paper>
+                                        <Typography variant='h6'>Prazo Final: {dayjs(tarefa.dataFinal).format('DD/MM/YYYY')}</Typography>
                                         <Typography 
                                             variant='h6' 
                                             className="status" 
-                                            style={{ color: tarefa.status === 'Finalizado' ? 'green' : 'red' }}
+                                            style={{ color: tarefa.status === 'Finalizado' ? 'green' : tarefa.status === 'Em andamento' ? 'orange' :'red' }}
                                         >
                                             {tarefa.status}
                                         </Typography>

@@ -39,6 +39,7 @@ const columns = [
   { id: 'turma', label: 'TURMA', minWidth: 100 },
   { id: 'RA', label: 'RA', minWidth: 100 },
   { id: 'view', label: 'VISUALIZAR DADOS', minWidth: 150 },
+  { id: 'tarefa', label: 'TAREFA', minWidth: 100 },
   { id: 'delete', label: 'DELETAR', minWidth: 100 },
 ];
 
@@ -127,6 +128,10 @@ function ListaAluno() {
 
   const handleView = (id) => {
     navigate(`/alunos/${id}`);
+  };
+
+  const handleTarefa = (id) => {
+    navigate(`/tarefas/${id}`);
   };
 
   const handleDelete = (id) => {
@@ -287,6 +292,11 @@ function ListaAluno() {
                         <TextSnippetIcon />
                         {column.label}
                       </div>
+                    ): column.id === "tarefa" ? (
+                      <div className="icon-tarefa">
+                        <TextSnippetIcon />
+                        {column.label}
+                      </div>
                     ) : column.id === "delete" ? (
                       <div className="icon-delete">
                         <DeleteIcon />
@@ -323,6 +333,16 @@ function ListaAluno() {
                               onClick={() => handleView(row.id)}
                             >
                               Visualizar dados
+                            </Button>
+                          ) : column.id === 'tarefa' ? (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              style={{ backgroundColor: '#007bff', color: 'white' }}
+                              startIcon={<TextSnippetIcon />}
+                              onClick={() => handleTarefa(row.id)}
+                            >
+                              Ver Tarefas
                             </Button>
                           ) : column.id === 'delete' ? (
                             <Button 

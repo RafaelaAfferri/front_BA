@@ -42,6 +42,8 @@ export default function Casos() {
     const openLig = Boolean(anchorLig);
     const openVis = Boolean(anchorVis);
     const openAtendimento = Boolean(anchorAtendimento);
+    const [selectedYear, setSelectedYear] = useState(dayjs().year());
+
 
     //Criação das colunas para a tabela de ligacoes
     const columnsLig = [
@@ -91,6 +93,15 @@ export default function Casos() {
         responsavel: atendimento.responsavel,
         observacao: atendimento.observacao,
     }));
+
+    const handleYearChange = (event) => {
+        setSelectedYear(event.target.value);
+    };
+
+    // Example data filtering function
+    const filterDataByYear = (data, year) => {
+        return data.filter(item => dayjs(item.date).year() === year);
+    };
 
 
     const [valueTabs, setValueTabs] = useState(0);
@@ -179,6 +190,7 @@ export default function Casos() {
         })
             .then(response => response.json())
             .then(data => {
+                data.dataNascimento = new Date(data.dataNascimento).toLocaleDateString('pt-BR');
                 setDataAluno(data);
             })
             .catch(response => {
@@ -703,7 +715,27 @@ export default function Casos() {
                         </Grid>
 
                         <Grid item xs={12} style={{ textAlign: "center" }}>Histórico da Busca Ativa</Grid>
-                        
+                        <Grid item xs={3} style={{ textAlign: "center", padding: "10px" }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="year-select-label">Ano</InputLabel>
+                                <Select
+                                    labelId="year-select-label"
+                                    id="year-select"
+                                    label="Ano"
+                                    value={selectedYear}
+                                    onChange={handleYearChange}
+                                >
+                                    {[...Array(10)].map((_, index) => {
+                                        const year = dayjs().year() - index;
+                                        return (
+                                            <MenuItem key={year} value={year}>
+                                                {year}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
                         <Grid item xs={12} style={{ textAlign: "center" }}>
                             <Button onClick={gerarRealatorio}>Gerar Relatório</Button>
                         </Grid>
@@ -720,7 +752,7 @@ export default function Casos() {
                                 <TabPanel value="0" >
                                     
                                     <Box sx={{ height: 400, width: "100%"}}>
-                                        <DataGrid rows={rowsLig} columns={columnsLig} pageSize={5} checkboxSelection
+                                        <DataGrid rows={filterDataByYear(rowsLig, selectedYear)} columns={columnsLig} pageSize={5} checkboxSelection
                                         onRowSelectionModelChange={(ids) => {
                                             const auxselectedRowsLig = (ids.map((id) => rowsLig.find((row) => row.id === id)));
                                             setSelectedRowsLig(auxselectedRowsLig);
@@ -732,7 +764,7 @@ export default function Casos() {
                                 <TabPanel value="1">
                                 
                                     <Box sx={{ height: 400, width: "100%"}}>
-                                        <DataGrid rows={rowsVis} columns={columnsVis} pageSize={5} checkboxSelection
+                                        <DataGrid rows={filterDataByYear(rowsVis, selectedYear)} columns={columnsVis} pageSize={5} checkboxSelection
                                         onRowSelectionModelChange={(ids) => {
                                             const auxselectedRowsVis = ids.map((id) => rowsVis.find((row) => row.id === id));
                                             setSelectedRowsVis(auxselectedRowsVis);
@@ -745,7 +777,7 @@ export default function Casos() {
                                 <TabPanel value="2">
                                     
                                     <Box sx={{ height: 400, width: "100%" }}>
-                                        <DataGrid rows={rowsAtendimento} columns={columnsAtendimento} pageSize={5} checkboxSelection
+                                        <DataGrid rows={filterDataByYear(rowsAtendimento, selectedYear)} columns={columnsAtendimento} pageSize={5} checkboxSelection
                                         onRowSelectionModelChange={(ids) => {
                                             const auxselectedRowsAtendimento= ids.map((id) => rowsAtendimento.find((row) => row.id === id));
                                             setSelectedRowsAtendimento(auxselectedRowsAtendimento);
