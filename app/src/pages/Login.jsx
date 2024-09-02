@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../components/img/logo.png';
 import './static/Login.css'; 
 
-
+const rota_base = "https://busca-ativa-emef-00fead7d18dc.herokuapp.com"
 
 export default function Login() {
   const cookies = new Cookies();
@@ -19,7 +19,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login", {
+      const response = await fetch(rota_base + "/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

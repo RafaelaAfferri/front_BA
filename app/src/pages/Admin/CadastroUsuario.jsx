@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './static/Cadastro.css';
 
+const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
 
 const cookies = new Cookies();
 
@@ -44,7 +45,7 @@ const RegisterForm = () => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/usuarios', {
+      const response = await fetch(rota_base+'/usuarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
