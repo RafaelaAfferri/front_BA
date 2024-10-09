@@ -25,6 +25,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Checkbox, FormControlLabel } from '@mui/material';
+import { rota_base } from '../../constants';
 
 const columns = [
   { id: 'email', label: 'EMAIL', minWidth: 100, editable: true },
@@ -37,7 +38,6 @@ const columns = [
 function createData(id, email, nome, permissao) {
   return { id, email, nome, permissao };
 }
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
 
 
 const cookies = new Cookies();

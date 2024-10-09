@@ -34,8 +34,7 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import './static/ListaAluno.css';
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com';
-
+const rota_base = 'http://127.0.0.1:8000';
 const columns = [
   { id: 'nome', label: 'NOME', minWidth: 100 },
   { id: 'turma', label: 'TURMA', minWidth: 100 },

@@ -6,8 +6,8 @@ import HeaderAdmin from './HeaderAdmin';
 import Cookies from 'universal-cookie';
 
 import './static/Dashboard.css';
+import { rota_base } from '../../constants';
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
 
 export default function Dashboard() {
   const [casos, setCasos] = useState([]);

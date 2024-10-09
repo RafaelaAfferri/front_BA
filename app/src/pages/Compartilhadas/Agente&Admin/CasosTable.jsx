@@ -31,8 +31,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 import Typography from '@mui/material/Typography';
 
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
-
+const rota_base = 'http://127.0.0.1:8000';
 const columns = [
     { id: 'aluno', label: 'ALUNO', minWidth: 100, format: (aluno) => aluno.nome.toUpperCase(), Icon: ContactsIcon },
     { id: 'turma', label: 'TURMA', minWidth: 100, Icon: GroupsIcon },

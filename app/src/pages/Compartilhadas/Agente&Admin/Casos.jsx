@@ -16,8 +16,7 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
-
+const rota_base = 'http://127.0.0.1:8000';
 const cookies = new Cookies();
 
 export default function Casos() {
@@ -215,6 +214,7 @@ export default function Casos() {
             body:   JSON.stringify({"token": token})
         }).then(response => response.json())
         .then(data => {
+            console.log(data)
             setUsuario(data.nome)
             console.log(usuario)
         })
@@ -224,6 +224,7 @@ export default function Casos() {
 
 
     function gerarRealatorio() {
+        console.log(usuario)
         fetch(rota_base+'/casos/gerar-relatorio', {
             method: 'POST',
             headers: {
@@ -238,7 +239,7 @@ export default function Casos() {
                 "turma": dataAluno.turma,
                 "estudante": dataAluno.nome,
                 "ra": dataAluno.RA,
-                "usuario": (usuario,""),
+                "usuario": usuario,
                 "ligacoes": selectedRowsLig,
                 "visitas": selectedRowsVis,
                 "atendimentos": selectedRowsAtendimento

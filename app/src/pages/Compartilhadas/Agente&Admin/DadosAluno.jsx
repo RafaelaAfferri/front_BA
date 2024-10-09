@@ -15,8 +15,7 @@ import HeaderAgente from '../../Agente/HeaderAgente';
 
 import './static/DadosAluno.css';
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
-
+const rota_base = 'http://127.0.0.1:8000';
 
 dayjs.extend(customParseFormat);
 const cookies = new Cookies();

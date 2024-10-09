@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './static/Cadastro.css';
-
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+import { rota_base } from '../../constants';
 
 const cookies = new Cookies();
 

@@ -1,0 +1,1 @@
+export const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'

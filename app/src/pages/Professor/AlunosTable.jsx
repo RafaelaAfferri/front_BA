@@ -33,8 +33,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import SearchIcon from '@mui/icons-material/Search';
 
 import './static/AlunosTable.css';
-
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com'
+import { rota_base } from '../../constants';
 
 const columns = [
     { id: 'nome', label: 'Nome', minWidth: 100 },

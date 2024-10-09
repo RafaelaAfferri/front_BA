@@ -5,8 +5,8 @@ import HeaderLogin from './HeaderLogin';
 import { useNavigate } from 'react-router-dom';
 import logo from '../components/img/logo.png';
 import './static/Login.css'; 
+import { rota_base } from '../constants';
 
-const rota_base = "https://busca-ativa-emef-00fead7d18dc.herokuapp.com"
 
 export default function Login() {
   const cookies = new Cookies();

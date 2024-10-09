@@ -1,4 +1,6 @@
 import Cookies from 'universal-cookie';
+import { rota_base } from '../constants';
+
 const cookies = new Cookies();
 
 const VerificaToken = async () => {
@@ -6,7 +8,7 @@ const VerificaToken = async () => {
     const token = cookies.get('token');
 
     if (token) {
-      const response = await fetch('https://sibae-5d2fe0c3da99.herokuapp.com/verificar-login', {
+      const response = await fetch(rota_base + '/verificar-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

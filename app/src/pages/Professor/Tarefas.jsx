@@ -17,8 +17,9 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
+import { rota_base } from '../../constants';
 
-const rota_base = 'https://busca-ativa-emef-00fead7d18dc.herokuapp.com';
+
 
 const cookies = new Cookies();
 

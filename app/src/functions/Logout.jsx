@@ -1,6 +1,7 @@
 import React from 'react';
 import Cookies from 'universal-cookie';
 import { Link, useNavigate } from 'react-router-dom';
+import { rota_base  } from '../constants';
 
 const cookies = new Cookies();
 
@@ -11,7 +12,7 @@ const Logout = () => {
     const handleLogout = (e) => {
         e.preventDefault();
 
-        fetch('https://sibae-5d2fe0c3da99.herokuapp.com/logout', {
+        fetch(rota_base+'/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

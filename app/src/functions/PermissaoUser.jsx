@@ -1,12 +1,14 @@
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+import { rota_base } from '../constants';
+
 
 const permissaoUser = async () => {
     try {
         const token = cookies.get('token');
         
         if (token) {
-            const response = await fetch(`https://sibae-5d2fe0c3da99.herokuapp.com/usuarios-permissao`, {
+            const response = await fetch(rota_base + `/usuarios-permissao`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
