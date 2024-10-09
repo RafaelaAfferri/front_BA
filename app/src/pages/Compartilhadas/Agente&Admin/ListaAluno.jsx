@@ -33,8 +33,10 @@ import ComputerIcon from '@mui/icons-material/Computer';
 import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import './static/ListaAluno.css';
+import { rota_base } from '../../../constants';
 
-const rota_base = 'http://127.0.0.1:8000';
+
+
 const columns = [
   { id: 'nome', label: 'NOME', minWidth: 100 },
   { id: 'turma', label: 'TURMA', minWidth: 100 },

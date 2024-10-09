@@ -29,9 +29,8 @@ import WarningIcon from '@mui/icons-material/Warning';
 import ArticleIcon from '@mui/icons-material/Article';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import Typography from '@mui/material/Typography';
+import { rota_base } from '../../../constants';
 
-
-const rota_base = 'http://127.0.0.1:8000';
 const columns = [
     { id: 'aluno', label: 'ALUNO', minWidth: 100, format: (aluno) => aluno.nome.toUpperCase(), Icon: ContactsIcon },
     { id: 'turma', label: 'TURMA', minWidth: 100, Icon: GroupsIcon },

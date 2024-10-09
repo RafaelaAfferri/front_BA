@@ -12,10 +12,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { rota_base } from '../../../constants';
 
-
-
-const rota_base = 'http://127.0.0.1:8000';
 // Ative o plugin
 dayjs.extend(customParseFormat);
 

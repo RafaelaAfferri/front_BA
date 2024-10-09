@@ -14,8 +14,7 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 
 import './static/DadosAluno.css';
-
-const rota_base = 'http://127.0.0.1:8000';
+import { rota_base } from '../../../constants';
 
 dayjs.extend(customParseFormat);
 const cookies = new Cookies();

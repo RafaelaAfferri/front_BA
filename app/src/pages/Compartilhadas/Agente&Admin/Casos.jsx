@@ -14,9 +14,9 @@ import Tab from '@mui/material/Tab';
 import { useParams } from 'react-router-dom';
 import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
+import { rota_base } from '../../../constants';
 
 
-const rota_base = 'http://127.0.0.1:8000';
 const cookies = new Cookies();
 
 export default function Casos() {
