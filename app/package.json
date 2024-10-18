@@ -1,13 +1,12 @@
-
 {
   "name": "app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    
     "dev": "vite",
     "build": "vite build",
+    "start": "serve -s build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -27,7 +26,7 @@
     "react-router-dom": "^6.23.1",
     "react-virtuoso": "^4.7.11",
     "recharts": "^2.12.7",
-    "serve": "^14.2.3",
+    "serve": "^14.2.4",
     "universal-cookie": "^7.1.4"
   },
   "devDependencies": {

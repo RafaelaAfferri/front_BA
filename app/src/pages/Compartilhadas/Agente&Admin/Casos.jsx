@@ -437,6 +437,18 @@ export default function Casos() {
         setAnchorVis(anchorVis ? null : event.currentTarget);
     }
 
+    const handleCloseVis = () => {
+        setAnchorVis(null);
+    };
+
+    const handleCloseAten = () => {
+        setAnchorAtendimento(null);
+    };
+
+    const handleCloseLig = () => {
+        setAnchorLig(null);
+    };
+
     const handleChangeStatus = (event) => {
         const newStatus = event.target.value;
         setStatus(newStatus);
@@ -537,6 +549,21 @@ export default function Casos() {
                         <Grid item xs={12}>
                             <Popper open={openLig} anchorEl={anchorLig} placement="bottom" modifiers={[{ name: 'offset', options: { offset: [0, 40] } }]} >
                                 <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }} style={{borderRadius:"10px"}}>
+                                    <Button 
+                                        onClick={handleCloseLig} 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: '10px', 
+                                            right: '10px', 
+                                            background: 'none', 
+                                            border: 'none', 
+                                            fontSize: '30px', 
+                                            cursor: 'pointer' 
+                                        }}
+                                    >
+                                        &times;
+                                    </Button>
+                                    
                                     <Grid container item xs={12} style={{ alignContent: "rigth", background: "lightgrey", borderRadius: "10px", padding: "10px" }}>
                                         <Container maxWidth="xs">
                                             <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -602,6 +629,21 @@ export default function Casos() {
                         <Grid item xs={12}>
                             <Popper open={openVis} anchorEl={anchorVis} placement="bottom" modifiers={[{ name: 'offset', options: { offset: [0, 40] } }]}>
                                 <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }} style={{borderRadius:"10px"}} >
+                                    <Button 
+                                        onClick={handleCloseVis} 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: '10px', 
+                                            right: '10px', 
+                                            background: 'none', 
+                                            border: 'none', 
+                                            fontSize: '30px', 
+                                            cursor: 'pointer' 
+                                        }}
+                                    >
+                                        &times;
+                                    </Button>
+
                                     <Grid container item xs={12} style={{ alignContent: "rigth", background: "lightgrey", borderRadius: "10px", padding: "10px" }}>
                                         <Container maxWidth="xs">
                                             <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -656,6 +698,20 @@ export default function Casos() {
                         <Grid item xs={12}>
                             <Popper open={openAtendimento} anchorEl={anchorAtendimento} placement="bottom" modifiers={[{ name: 'offset', options: { offset: [0, 40] } }]} >
                                 <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }} style={{borderRadius:"10px"}}>
+                                    <Button 
+                                    onClick={handleCloseAten} 
+                                    style={{ 
+                                        position: 'absolute', 
+                                        top: '10px', 
+                                        right: '10px', 
+                                        background: 'none', 
+                                        border: 'none', 
+                                        fontSize: '30px', 
+                                        cursor: 'pointer' 
+                                    }}
+                                    >
+                                    &times;
+                                    </Button>
                                     <Grid container item xs={12} style={{ alignContent: "rigth", background: "lightgrey", borderRadius: "10px", padding: "10px" }}>
                                         <Container maxWidth="xs">
                                             <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -746,7 +802,7 @@ export default function Casos() {
                         </Grid>
 
                         <Grid container item xs={12} >
-                            <TabContext value={valueTabs} style={{alignItems:"rigth"}}>
+                            <TabContext value={valueTabs}>
                                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                                 <TabList onChange={handleChangeTabs} aria-label="tabs example">
                                     <Tab label="Ligação" value="0" />
