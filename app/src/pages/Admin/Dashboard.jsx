@@ -27,6 +27,7 @@ export default function Dashboard() {
       },
     })
     .then(response => {
+      console.log("Resposta do servidor:", response)
       if (!response.ok) {
         throw new Error('Failed to fetch cases');
       }
@@ -74,6 +75,7 @@ export default function Dashboard() {
     setStatusData(statusData);
     setUrgenciaData(urgenciaData);
     setTurmaData(turmaData);
+    console.log(casos)
   };
 
   const COLORS = ['#007bff', '#FBD542', '#008000', '#05263E'];
