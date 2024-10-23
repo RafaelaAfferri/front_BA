@@ -1,4 +1,4 @@
-import { Button, Container, Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, Box, Popper } from '@mui/material';
+import { Button, Container, Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, Box, Popper, Checkbox, ListItemText } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -44,7 +44,7 @@ export default function Casos() {
     const openLig = Boolean(anchorLig);
     const openVis = Boolean(anchorVis);
     const openAtendimento = Boolean(anchorAtendimento);
-    const [selectedYear, setSelectedYear] = useState(dayjs().year());
+    const [selectedYear, setSelectedYear] = useState([dayjs().year()]);
 
 
     //Criação das colunas para a tabela de ligacoes
@@ -96,15 +96,21 @@ export default function Casos() {
         observacao: atendimento.observacao,
     }));
 
+
+
     const handleYearChange = (event) => {
-        setSelectedYear(event.target.value);
+        const value = event.target.value;
+        setSelectedYear(value);
     };
 
-    // Example data filtering function
+
     const filterDataByYear = (data, year) => {
-        return data.filter(item => dayjs(item.date).year() === year);
+        return data.filter(item => {
+            const date = dayjs(item.data, 'DD/MM/YYYY');
+            const itemYear = date.year();
+            return year.includes(itemYear);
+        });
     };
-
 
     const [valueTabs, setValueTabs] = useState(0);
 
@@ -778,22 +784,25 @@ export default function Casos() {
                         <Grid item xs={12} style={{ textAlign: "center" }}>Histórico da Busca Ativa</Grid>
                         <Grid item xs={3} style={{ textAlign: "center", padding: "10px" }}>
                             <FormControl fullWidth>
-                                <InputLabel id="year-select-label">Ano</InputLabel>
+                                <InputLabel id="year-select-label">Anos</InputLabel>
                                 <Select
                                     labelId="year-select-label"
                                     id="year-select"
-                                    label="Ano"
+                                    multiple
                                     value={selectedYear}
                                     onChange={handleYearChange}
+                                    renderValue={(selected) => selected.join(', ')}
                                 >
                                     {[...Array(10)].map((_, index) => {
                                         const year = dayjs().year() - index;
                                         return (
                                             <MenuItem key={year} value={year}>
-                                                {year}
+                                                <Checkbox checked={selectedYear.indexOf(year) > -1} />
+                                                <ListItemText primary={year} />
                                             </MenuItem>
                                         );
                                     })}
+                                    
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -830,7 +839,9 @@ export default function Casos() {
                                             const auxselectedRowsVis = ids.map((id) => rowsVis.find((row) => row.id === id));
                                             setSelectedRowsVis(auxselectedRowsVis);
                                             console.log(selectedRowsVis);
+                                            
 []                                          }}
+                                            
                                             rowSelectionModel={selectedRowsVis.map((row) => row.id)}
                                         />
                                     </Box>
