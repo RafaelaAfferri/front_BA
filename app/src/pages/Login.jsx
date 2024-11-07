@@ -10,7 +10,7 @@ import { rota_base } from '../constants';
 
 export default function Login() {
   const cookies = new Cookies();
-  const [email, setEmail] = useState("");
+  const [nomeusuario, setNomeusuario] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ nomeusuario, password })
       });
 
       if (response.ok) {
@@ -35,7 +35,7 @@ export default function Login() {
       } else {
         const errorData = await response.json();
         console.log(errorData);
-        setError("Credenciais não conferem. Confirme seu email e senha.");
+        setError("Credenciais não conferem. Confirme seu usuario e senha.");
       }
     } catch (error) {
       console.log(error);
@@ -63,12 +63,12 @@ export default function Login() {
                   <form onSubmit={handleSubmit} style={{opacity:"0.9", backgroundColor:"white"}}>
                     <TextField
                       fullWidth
-                      type="email"
-                      name="email"
-                      label="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Digite seu email"
+                      type="nomeusuario"
+                      name="nomeusuario"
+                      label="Nome de usuário"
+                      value={nomeusuario}
+                      onChange={(e) => setNomeusuario(e.target.value)}
+                      placeholder="Digite seu usuário"
                       variant="outlined"
                       margin="normal"
                     />

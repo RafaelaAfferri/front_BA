@@ -380,8 +380,8 @@ export default function Casos() {
                 observacao: '',
 
             });
-            // loadCasos()
-            // loadAlunos()
+            loadCasos()
+            loadAluno()
         } catch (error) {
             console.error('Erro:', error);
             alert('Erro ao salvar o caso');
@@ -538,7 +538,7 @@ export default function Casos() {
                                     <MenuItem value={"BAIXA"}>Baixa</MenuItem>
                                     <MenuItem value={"MEDIA"}>Média</MenuItem>
                                     <MenuItem value={"ALTA"}>Alta</MenuItem>
-                                    <MenuItem value={"NAO INFORMADO"}>Não Informado</MenuItem>
+                                    <MenuItem value={"INDEFINIDA"}>Indefinida</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

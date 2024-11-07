@@ -14,7 +14,7 @@ const RegisterForm = () => {
   const token = cookies.get('token');
 
   const [formData, setFormData] = useState({
-    email: '',
+    nomeusuario: '',
     nome: '',
     senha: '',
     confirmarSenha: '',
@@ -37,7 +37,7 @@ const RegisterForm = () => {
     }
 
     const userData = {
-      email: formData.email,
+      nomeusuario: formData.nomeusuario,
       nome: formData.nome,
       permissao: formData.permissoes,
       password: formData.senha,
@@ -61,7 +61,7 @@ const RegisterForm = () => {
       console.log('Cadastro realizado com sucesso:', data);
       alert('Cadastro realizado com sucesso');
       setFormData({
-        email: '',
+        nomeusuario: '',
         nome: '',
         senha: '',
         confirmarSenha: '',
@@ -105,12 +105,12 @@ const RegisterForm = () => {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  value={formData.email}
+                  id="nomeusuario"
+                  label="Nome de Usuário"
+                  name="nomeusuario"
+                  value={formData.nomeusuario}
                   onChange={handleChange}
-                  autoComplete="email"
+                  autoComplete="nomeusuario"
                   autoFocus
                   />
                   <TextField

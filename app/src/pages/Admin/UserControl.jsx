@@ -21,22 +21,22 @@ import Typography from '@mui/material/Typography';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import EmailIcon from '@mui/icons-material/Email';
+import nomeusuarioIcon from '@mui/icons-material/AccountCircle';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { rota_base } from '../../constants';
 
 const columns = [
-  { id: 'email', label: 'EMAIL', minWidth: 100, editable: true },
+  { id: 'nomeusuario', label: 'nomeusuario', minWidth: 100, editable: true },
   { id: 'nome', label: 'NOME', minWidth: 100, editable: true },
   { id: 'permissao', label: 'PERMISSÃO', minWidth: 100, editable: true },
   { id: 'edit', label: 'EDITAR', minWidth: 100, editable: false },
   { id: 'delete', label: 'DELETAR', minWidth: 100, editable: false },
 ];
 
-function createData(id, email, nome, permissao) {
-  return { id, email, nome, permissao };
+function createData(id, nomeusuario, nome, permissao) {
+  return { id, nomeusuario, nome, permissao };
 }
 
 
@@ -82,7 +82,7 @@ function UserControl() {
 
   useEffect(() => {
     let results = users.filter(user =>
-      (user.nome.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (user.nome.toLowerCase().includes(searchTerm.toLowerCase()) || user.nomeusuario.toLowerCase().includes(searchTerm.toLowerCase())) &&
       (filterPermissions.length === 0 || filterPermissions.includes(user.permissao))
     );
 
@@ -203,7 +203,7 @@ function UserControl() {
   };
 
   const rows = filteredUsers.map(user => {
-    return createData(user._id, user.email, user.nome, user.permissao);
+    return createData(user._id, user.nomeusuario, user.nome, user.permissao);
   });
   
   const rowColors = {
@@ -234,7 +234,7 @@ function UserControl() {
       
         <div className="filter-box">
           <TextField
-            label="Busque pelo nome ou email"
+            label="Busque pelo nome ou Nome de usuario"
             variant="outlined"
             size="small"
             value={searchTerm}
@@ -303,9 +303,9 @@ function UserControl() {
                       <SupervisorAccountIcon style={{ paddingRight: "3px" }} />
                       {column.label}
                     </div>
-                  ) : column.id === "email" ? (
-                    <div className="icon-email" style={{ paddingTop: "4px", display: "flex" }}>
-                      <EmailIcon style={{ paddingRight: "3px" }} />
+                  ) : column.id === "nomeusuario" ? (
+                    <div className="icon-AccountCircle" style={{ paddingTop: "4px", display: "flex" }}>
+                      <nomeusuarioIcon style={{ paddingRight: "3px" }} />
                       {column.label}
                     </div>
                   ) : column.id === "nome" ? (
@@ -398,7 +398,7 @@ function UserControl() {
                                   >
                                     <TextField
                                       id="filled-basic"
-                                      label={id === 'email' ? 'Email' : id === 'nome' ? 'Nome' : ''}
+                                      label={id === 'nomeusuario' ? 'nomeusuario' : id === 'nome' ? 'Nome' : ''}
                                       variant="filled"
                                       value={editedUsersData[row.id] ? editedUsersData[row.id][id] : value}
                                       onChange={(e) => handleInputChange(e, id, row.id)}

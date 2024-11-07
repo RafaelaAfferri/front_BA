@@ -24,7 +24,28 @@ export default function Dashboard() {
   const token = cookies.get('token');
 
   useEffect(() => {
-    fetch(rota_base +'/casos', {
+    let url = `${rota_base}/casos`;
+
+    // Adicionar parâmetros se não forem "todos"
+    const params = new URLSearchParams();
+
+    if (selectedYear !== "todos") {
+      params.append('ano', selectedYear);
+    }
+    
+    if (selectedTurma !== "todos") {
+      if(selectedClass !== "todos"){
+        params.append('turma', selectedTurma + selectedClass);
+      }
+      else{
+        params.append('turma', selectedTurma);
+      }
+    }
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +66,7 @@ export default function Dashboard() {
     .catch(error => {
       setError(error.message);
     });
-  }, [token]);
+  }, [token, selectedYear, selectedTurma, selectedClass]);
 
 
   const handleGenerateReport = () => {
@@ -67,8 +88,6 @@ export default function Dashboard() {
       }
     }
     
-
-    // Se houver parâmetros, adicioná-los à URL
     if (params.toString()) {
       url += `?${params.toString()}`;
     }
@@ -123,7 +142,7 @@ export default function Dashboard() {
 
   const processCaseData = (casos) => {
     const statusCounts = { 'EM ABERTO': 0, 'FINALIZADO': 0 };
-    const urgenciaCounts = { 'ALTA': 0, 'MEDIA': 0, 'BAIXA': 0, 'NAO INFORMADO': 0 };
+    const urgenciaCounts = { 'ALTA': 0, 'MEDIA': 0, 'BAIXA': 0, 'INDEFINIDA': 0 };
     const turmaCounts = {};
 
     casos.forEach(caso => {
@@ -275,7 +294,7 @@ export default function Dashboard() {
                 Prioridade dos Casos
               </Typography>
               <PieChart width={400} height={300}>
-                <Pie dataKey="value" data={urgenciaData} cx={200} cy={150} outerRadius={80} label={({ name }) => name === 'NAO INFORMADO' ? 'N/A' : name}>
+                <Pie dataKey="value" data={urgenciaData} cx={200} cy={150} outerRadius={80} label={({ name }) => name === 'INDEFINIDA' ? 'N/A' : name}>
                   {urgenciaData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -293,6 +312,7 @@ export default function Dashboard() {
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <BarChart
                   xAxis={[{ scaleType: 'band', data: turmaData.map(item => item.name) }]}
+                  yAxis={[{ tickMaxStep: 1, tickMinStep: 1 }]}
                   series={[{ data: turmaData.map(item => item.value) }]}
                   width={600}
                   height={400}
