@@ -63,7 +63,7 @@ const CadastroAluno = () => {
   };
 
   // Função para lidar com o envio do formulário
-  const handleSubmit = async (e) => {
+  const handleSubmitOne = async (e) => {
     e.preventDefault();
 
     const alunoData = {
@@ -134,7 +134,7 @@ const CadastroAluno = () => {
           </Grid>
           <Grid item xs={10} style={{ textAlign: 'center' }}>
             <Container maxWidth="md">
-              <Box component="form" onSubmit={handleSubmit} className="form-container">
+              <Box component="form" onSubmit={handleSubmitOne} className="form-container">
                 <Typography component="h1" variant="h5" className="form-title">
                   Cadastro de Aluno
                 </Typography>

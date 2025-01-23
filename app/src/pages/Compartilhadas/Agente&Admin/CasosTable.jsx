@@ -230,7 +230,7 @@ function CasosTable() {
                         </div>
                         <div className="filter-group">
                             <h4>Prioridade:</h4>
-                            {['BAIXA', 'MEDIA', 'ALTA', 'NÃO INFORMADO'].map(urgency => (
+                            {['BAIXA', 'MEDIA', 'ALTA', 'INDEFINIDA'].map(urgency => (
                                 <FormControlLabel
                                     key={urgency}
                                     control={<Checkbox checked={filterUrgency.includes(urgency)} onChange={handleUrgencyChange} value={urgency} />}
