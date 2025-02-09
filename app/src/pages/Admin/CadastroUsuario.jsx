@@ -10,14 +10,11 @@ import { rota_base } from '../../constants';
 const cookies = new Cookies();
 
 const RegisterForm = () => {
-
   const token = cookies.get('token');
-
+  const [senha, setSenha] = useState('');
   const [formData, setFormData] = useState({
     nomeusuario: '',
     nome: '',
-    senha: '',
-    confirmarSenha: '',
     permissoes: 'professor',
   });
 
@@ -31,20 +28,15 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.senha !== formData.confirmarSenha) {
-      alert('Senhas não coincidem!');
-      return;
-    }
 
     const userData = {
       nomeusuario: formData.nomeusuario,
       nome: formData.nome,
       permissao: formData.permissoes,
-      password: formData.senha,
     };
 
     try {
-      const response = await fetch(rota_base+'/usuarios', {
+      const response = await fetch(`${rota_base}/usuarios`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,127 +46,88 @@ const RegisterForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Erro na requisição');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro na requisição');
       }
 
       const data = await response.json();
-      console.log('Cadastro realizado com sucesso:', data);
+      setSenha(data.senha);
       alert('Cadastro realizado com sucesso');
-      setFormData({
-        nomeusuario: '',
-        nome: '',
-        senha: '',
-        confirmarSenha: '',
-        permissoes: 'professor',
-      });
+      setFormData({ nomeusuario: '', nome: '', permissoes: 'professor' });
     } catch (error) {
       console.error('Erro:', error);
-      alert('Erro ao realizar cadastro');
+      alert(error);
     }
   };
 
   return (
-    
-    <div >
+    <div>
       <HeaderAdmin />
-      
       <div className='geral'>
-      <Grid container spacing={2} className="login-container">
-          <Grid item xs={1} style={{paddingLeft:"40px", paddingTop:"3%" }}>
-            <Link to="/usuarios" style={{ textDecoration: 'none', color:"#007bff" }}>
+        <Grid container spacing={2} className="login-container">
+          <Grid item xs={1} style={{ paddingLeft: "40px", paddingTop: "3%" }}>
+            <Link to="/usuarios" style={{ textDecoration: 'none', color: "#007bff" }}>
               <ArrowBackIcon className="back-arrow" />
             </Link>
           </Grid>
-        <Grid item xs={10} style={{textAlign:'center'}}>
-          <br/>
-          
-          <Container maxWidth="xs">
-              <Box
-              sx={{
-                  marginTop: 8,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-              }}
-              >
-              <Typography component="h1" variant="h5">
-                  Cadastro
-              </Typography>
-              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid item xs={10} style={{ textAlign: 'center' }}>
+            <br />
+            <Container maxWidth="xs">
+              <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography component="h1" variant="h5">Cadastro</Typography>
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
                   <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="nomeusuario"
-                  label="Nome de Usuário"
-                  name="nomeusuario"
-                  value={formData.nomeusuario}
-                  onChange={handleChange}
-                  autoComplete="nomeusuario"
-                  autoFocus
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="nomeusuario"
+                    label="Nome de Usuário"
+                    name="nomeusuario"
+                    value={formData.nomeusuario}
+                    onChange={handleChange}
+                    autoComplete="nomeusuario"
+                    autoFocus
                   />
                   <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="nome"
-                  label="Nome"
-                  name="nome"
-                  value={formData.nome}
-                  onChange={handleChange}
-                  autoComplete="nome"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="nome"
+                    label="Nome"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={handleChange}
+                    autoComplete="nome"
                   />
                   <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="senha"
-                  label="Senha"
-                  type="password"
-                  id="senha"
-                  value={formData.senha}
-                  onChange={handleChange}
-                  autoComplete="current-password"
-                  />
-                  <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="confirmarSenha"
-                  label="Confirmar Senha"
-                  type="password"
-                  id="confirmarSenha"
-                  value={formData.confirmarSenha}
-                  onChange={handleChange}
-                  autoComplete="confirm-password"
-                  />
-                  <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  select
-                  label="Permissões"
-                  name="permissoes"
-                  value={formData.permissoes}
-                  onChange={handleChange}
+                    margin="normal"
+                    required
+                    fullWidth
+                    select
+                    label="Permissões"
+                    name="permissoes"
+                    value={formData.permissoes}
+                    onChange={handleChange}
                   >
-                  <MenuItem value="professor">Professor</MenuItem>
-                  <MenuItem value="admin">Administrador</MenuItem>
-                  <MenuItem value="agente">Agente/Funcionário</MenuItem>
+                    <MenuItem value="professor">Professor</MenuItem>
+                    <MenuItem value="admin">Administrador</MenuItem>
+                    <MenuItem value="agente">Agente/Funcionário</MenuItem>
                   </TextField>
-                  <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  >
-                  Cadastrar
+                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    Cadastrar
                   </Button>
+                </Box>
+                {senha && (
+                  <Box sx={{ mt: 3, p: 2, bgcolor: '#f3f3f3', borderRadius: 1, textAlign: 'center' }}>
+                    <Typography variant="body1">Cadastro realizado com sucesso!</Typography>
+                    <Typography variant="body2">Sua senha gerada é:</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', wordBreak: 'break-word' }}>{senha}</Typography>
+                  </Box>
+                )}
               </Box>
-              </Box>
-          </Container>
+            </Container>
+          </Grid>
         </Grid>
-      </Grid>
       </div>
     </div>
   );

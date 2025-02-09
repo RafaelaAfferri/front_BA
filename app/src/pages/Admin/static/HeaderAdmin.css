@@ -88,3 +88,13 @@ body {
 .header ul li {
   display: inline;
 }
+
+.notificacao {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}

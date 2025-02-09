@@ -1,6 +1,6 @@
 // Importa os módulos necessários do React, Material-UI, universal-cookie, react-router-dom, e ícones
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Box, Grid, Input } from '@mui/material';
+import { TextField, Button, Typography, Container, Box, Grid, InputLabel, Select, FormControl } from '@mui/material';
 import Cookies from 'universal-cookie';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -13,6 +13,7 @@ import HeaderAdmin from '../../Admin/HeaderAdmin';
 import HeaderAgente from '../../Agente/HeaderAgente';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { rota_base } from '../../../constants';
+import { MenuItem } from '@mui/material';
 
 // Ative o plugin
 dayjs.extend(customParseFormat);
@@ -62,7 +63,8 @@ const CadastroAluno = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Erro na requisição');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro na requisição');
       }
 
       const data = await response.json();
@@ -73,7 +75,7 @@ const CadastroAluno = () => {
       navigate('/alunos');
     } catch (error) {
       console.error('Erro:', error);
-      alert('Erro ao realizar cadastro');
+      alert(error);
     }
 
   };
@@ -89,6 +91,7 @@ const CadastroAluno = () => {
     telefone2: '',
     responsavel: '',
     responsavel2: '',
+    teg: '',
   });
 
   const handleChange = (e) => {
@@ -121,6 +124,7 @@ const CadastroAluno = () => {
       telefone2: formData.telefone2,
       responsavel: formData.responsavel,
       responsavel2: formData.responsavel2,
+      utiliz_teg: formData.teg,
     };
 
     try {
@@ -154,6 +158,7 @@ const CadastroAluno = () => {
         telefone2: '',
         responsavel: '',
         responsavel2: '',
+        teg: '',
       });
 
       // Redireciona para a página de alunos após o cadastro bem-sucedido
@@ -316,20 +321,6 @@ const CadastroAluno = () => {
                     </DemoContainer>
                   </LocalizationProvider>
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                  <TextField
-                    className="form-field"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="dataNascimento"
-                    label="Data de Nascimento"
-                    name="dataNascimento"
-                    value={formData.dataNascimento}
-                    onChange={handleChange}
-                    autoComplete="dataNascimento"
-                    />
-                    </Grid> */}
                 <Grid item xs={12} sm={6}>
                   <TextField
                     className="form-field"
@@ -383,6 +374,22 @@ const CadastroAluno = () => {
                     onChange={handleChange}
                     autoComplete="responsavel2"
                     />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel id="teg-label">Utiliza TEG?</InputLabel>
+                  <Select
+                    id="teg"
+                    name="teg"
+                    value={formData.teg}
+                    onChange={handleChange}
+                    labelId="teg-label" // Associando a label ao Select
+                  >
+                    <MenuItem value=""><em>Nenhum</em></MenuItem>
+                    <MenuItem value="NÃO">Não</MenuItem>
+                    <MenuItem value="SIM">Sim</MenuItem>
+                  </Select>
+                </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <Button

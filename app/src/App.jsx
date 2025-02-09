@@ -23,6 +23,8 @@ import CadastroAluno from './pages/Compartilhadas/Agente&Admin/CadastroAluno';
 import ListaAluno from './pages/Compartilhadas/Agente&Admin/ListaAluno';
 import DadosAluno from './pages/Compartilhadas/Agente&Admin/DadosAluno';
 import Casos from './pages/Compartilhadas/Agente&Admin/Casos';
+import Pendencias from './pages/Compartilhadas/Agente&Admin/Pendencias';
+import AlterarSenha from './pages/Compartilhadas/Agente&Admin/AlterarSenha';
 
 // Funções
 import EstaAutenticado from './functions/EstaAutenticado';
@@ -70,6 +72,8 @@ function App() {
             <Route path="/alunos/criar" element={<CadastroAluno />} />
             <Route path="/casos/:id" element={<Casos />} />
             <Route path="/tarefas/:id" element={<AdicionarTarefa />} />
+            <Route path="/pendencias" element={<Pendencias />} />
+            <Route path="/alterar-senha" element={<AlterarSenha />} />
 
             </>
           )}
@@ -79,6 +83,7 @@ function App() {
             <>
             <Route path="/home" element={<HomeProfessor />} />
             <Route path="/tarefas/:id" element={<AdicionarTarefa />} />
+            <Route path="/alterar-senha" element={<AlterarSenha />} />
             </>
           )}
 
@@ -90,6 +95,9 @@ function App() {
             <Route path="/alunos/:id" element={<DadosAluno />} />
             <Route path="/alunos/criar" element={<CadastroAluno />} />
             <Route path="/casos/:id" element={<Casos />} />
+            <Route path="/pendencias" element={<Pendencias />} />
+            <Route path="/alterar-senha" element={<AlterarSenha />} />
+            <Route path="/tarefas/:id" element={<AdicionarTarefa />} />
             </>
           )}
 

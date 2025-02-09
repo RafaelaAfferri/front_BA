@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import HeaderProfessor from './HeaderProfessor';
+import HeaderAgente from '../Agente/HeaderAgente'
+import HeaderAdmin from '../Admin/HeaderAdmin';
 import Cookies from 'universal-cookie';
 import { TextField, Button, Container, Typography, Card, CardContent, CardActions, IconButton, Select, MenuItem, InputLabel, Box, Paper, FormControl, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, Grid } from '@mui/material';
 
@@ -36,6 +38,7 @@ function Tarefas() {
     const [statusFilter, setStatusFilter] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const token = cookies.get('token');
+    const permissao = cookies.get('permissao');
     const { id } = useParams();
 
     const handleSubmit = (event) => {
@@ -209,7 +212,9 @@ function Tarefas() {
 
     return (
         <div>
-            <HeaderProfessor />
+            {permissao === 'PROFESSOR' && <HeaderProfessor />}
+            {permissao === 'AGENTE' && <HeaderAgente />}
+            {permissao === 'ADMIN' && <HeaderAdmin />}
             <div className='user-control'>
                 <Container>
                     <Box className="tarefas-header">

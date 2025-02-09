@@ -95,7 +95,30 @@ function UserControl() {
     setFilteredUsers(results);
   }, [searchTerm, filterPermissions, sortOption, users]);
 
+
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const handleOpenConfirmDialog = (id) => {
+    setUserToDelete(id);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      handleDelete(userToDelete);
+      handleCloseConfirmDialog();
+    }
+  };
+
+
   const handleDelete = id => {
+
     fetch(rota_base+`/usuarios/${id}`, {
       method: 'DELETE',
       headers: {
@@ -214,6 +237,23 @@ function UserControl() {
   
 
   return (
+    <>
+    <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
+        <DialogTitle>Confirmar Exclusão</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Tem certeza que deseja excluir este usuário? Essa ação não pode ser desfeita.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+            Excluir
+          </Button>
+        </DialogActions>
+      </Dialog>
     <div className='user-control'>
       <HeaderAdmin />
       <div className='title' style={{display:"flex", justifyContent:"space-between"}}>
@@ -361,7 +401,7 @@ function UserControl() {
                                 variant="contained"
                                 sx={{ backgroundColor: 'red', color: 'white' }}
                                 startIcon={<DeleteIcon />}
-                                onClick={() => handleDelete(row.id)}>Deletar</Button>
+                                onClick={() => handleOpenConfirmDialog(row.id)}>Deletar</Button>
                             ) : (
                               editable ? (
                                 id === 'permissao' ? (
@@ -373,12 +413,12 @@ function UserControl() {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Permissão"
-                                            value={editedUsersData[row.id] ? editedUsersData[row.id][id] : value}
+                                            value={editedUsersData[row.id] && editedUsersData[row.id][id] !== undefined ? editedUsersData[row.id][id] : value}
                                             onChange={(e) => handlePermissionChange(e, row.id)}
                                             >
-                                            <MenuItem value={"AGENT"}>AGENT</MenuItem>
-                                            <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
-                                            <MenuItem value={"PROFESSOR"}>PROFESSOR</MenuItem>
+                                            <MenuItem value="PROFESSOR">Professor</MenuItem>
+                                            <MenuItem value="ADMIN">Administrador</MenuItem>
+                                            <MenuItem value="AGENTE">Agente</MenuItem>
                                             </Select>
                                         </FormControl>
                                         </Box>
@@ -441,7 +481,9 @@ function UserControl() {
         </Link>
       </div>
     </div>
+    </>
   );
+
 }
 
 export default UserControl;

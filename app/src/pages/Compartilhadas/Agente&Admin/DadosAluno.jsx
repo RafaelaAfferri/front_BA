@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import { Grid, TextField, Button, Paper, Box, Typography, Container } from '@mui/material';
+import { Grid, TextField, Button, Paper, Box, Typography, Container, FormControl, MenuItem, InputLabel, Select } from '@mui/material';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -71,6 +71,8 @@ function DadosAluno() {
   };
 
   const handleSave = () => {
+
+    console.log('editedAluno:', editedAluno);
     fetch(rota_base+`/alunoBuscaAtiva/${id}`, {
       method: 'PUT',
       headers: {
@@ -143,8 +145,9 @@ function DadosAluno() {
                           variant="outlined"
                           fullWidth
                           value={editedAluno.RA || ''}
+                          onChange={handleInputChange}
                           InputProps={{
-                            readOnly: true,
+                            readOnly: !editMode,
                             style: { backgroundColor: 'inherit' }
                           }}
                         />
@@ -248,6 +251,23 @@ function DadosAluno() {
                             style: { backgroundColor: editMode ? 'white' : 'inherit' }
                           }}
                         />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth required>
+                          <InputLabel id="teg-label">Utiliza TEG?</InputLabel>
+                          <Select
+                            id="utiliz_teg"
+                            name="utiliz_teg" // Certifique-se de que o nome seja consistente
+                            value={editedAluno.utiliz_teg || ''} // Consistência com a chave no estado
+                            onChange={handleInputChange}
+                            disabled={!editMode} // Use `disabled` para controlar o estado de edição
+                            labelId="teg-label"
+                          >
+                            <MenuItem value=""><em>Nenhum</em></MenuItem>
+                            <MenuItem value="NÃO">Não</MenuItem>
+                            <MenuItem value="SIM">Sim</MenuItem>
+                          </Select>
+                        </FormControl>
                       </Grid>
                     </Grid>
                     <Box sx={{ marginTop: '16px', display: 'flex', justifyContent: 'space-between' }}>

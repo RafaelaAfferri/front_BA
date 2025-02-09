@@ -21,6 +21,9 @@ const HeaderProfessor = () => {
           <li className={getLinkClass('/home')}>
             <Link to="/home">Home</Link>
           </li>
+          <li className={getLinkClass('/alterar-senha')}>
+            <Link to="/alterar-senha">Alterar Senha</Link>
+          </li>
           <li>
             <Logout />
           </li>

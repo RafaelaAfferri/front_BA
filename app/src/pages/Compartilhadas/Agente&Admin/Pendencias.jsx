@@ -52,7 +52,7 @@ function createData(id, nome, turma, RA) {
 
 const cookies = new Cookies();
 
-function ListaAluno() {
+function Pendencias() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -69,7 +69,7 @@ function ListaAluno() {
   }, []);
 
   const fetchUsers = () => {
-    fetch(rota_base+'/alunoBuscaAtiva/completo', {
+    fetch(rota_base+'/alunoBuscaAtiva/incompleto', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -137,40 +137,41 @@ function ListaAluno() {
     navigate(`/tarefas/${id}`);
   };
 
-const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-const [selectedUserId, setSelectedUserId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  
+  const handleConfirmDelete = (id) => {
+    setSelectedUserId(id);
+    setDeleteDialogOpen(true);
+  };
+  
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setSelectedUserId(null);
+  };
 
-const handleConfirmDelete = (id) => {
-  setSelectedUserId(id);
-  setDeleteDialogOpen(true);
-};
-
-const handleCloseDeleteDialog = () => {
-  setDeleteDialogOpen(false);
-  setSelectedUserId(null);
-};
-
-const handleDelete = () => {
-  if (!selectedUserId) return;
-
-  fetch(rota_base+`/alunoBuscaAtiva/${selectedUserId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
-      }
-      setUsers(users.filter(user => user._id !== selectedUserId));
-      handleCloseDeleteDialog();
+  const handleDelete = () => {
+    if (!selectedUserId) return;
+  
+    fetch(rota_base+`/alunoBuscaAtiva/${selectedUserId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
     })
-    .catch(error => {
-      console.error('Error deleting user:', error);
-    });
-};
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+        setUsers(users.filter(user => user._id !== selectedUserId));
+        handleCloseDeleteDialog();
+      })
+      .catch(error => {
+        console.error('Error deleting user:', error);
+      });
+  };
+
   const handleOpenDialog = () => {
     setDialogOpen(true);
   };
@@ -363,14 +364,15 @@ const handleDelete = () => {
                               Ver Tarefas
                             </Button>
                           ) : column.id === 'delete' ? (
-                            <Button
-                            sx = {{ backgroundColor: 'red', color: 'white' }}
-                            onClick={() => handleConfirmDelete(row.id)}
-                            variant="contained"
-                            startIcon={<DeleteIcon />}
-                          >
-                            Excluir
-                          </Button>
+                            <Button 
+                              variant="contained" 
+                              className='delete-button'
+                              startIcon={<DeleteIcon />}
+                              onClick={() => handleConfirmDelete(row.id)}
+                              sx = {{ backgroundColor: 'red', color: 'white' }}
+                            >
+                              Deletar
+                            </Button>
                           ) : (
                             value
                           )}
@@ -392,11 +394,6 @@ const handleDelete = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <div className='button-container'>
-        <Link to='/alunos/criar' className='create-user'>
-          <Button variant="contained" disableElevation>Criar novo aluno</Button>
-        </Link>
-      </div>
       <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
@@ -411,4 +408,4 @@ const handleDelete = () => {
   );
 }
 
-export default ListaAluno;
+export default Pendencias;
