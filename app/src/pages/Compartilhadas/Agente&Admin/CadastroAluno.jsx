@@ -67,18 +67,30 @@ const CadastroAluno = () => {
         throw new Error(errorData.error || 'Erro na requisição');
       }
 
-      const data = await response.json();
-      console.log('Cadastro realizado com sucesso:', data);
-      alert('Cadastro realizado com sucesso');
+      const contentDisposition = response.headers.get("Content-Disposition");
 
-      // Redireciona para a página de alunos após o envio bem-sucedido
-      navigate('/alunos');
+        if (contentDisposition) {
+            // A resposta é um arquivo
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = contentDisposition.split("filename=")[1].replace(/"/g, "");
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            navigate('/alunos');
+        } else {
+            // A resposta é um JSON (sucesso ou erro)
+            const data = await response.json();
+            alert(data.message || data.error);
+            navigate('/alunos');
+        }
     } catch (error) {
-      console.error('Erro:', error);
-      alert(error);
+        console.error("Erro ao enviar o arquivo:", error);
+        alert("Erro ao processar a requisição.");
     }
-
-  };
+};
 
   const [formData, setFormData] = useState({
     nome: '',
