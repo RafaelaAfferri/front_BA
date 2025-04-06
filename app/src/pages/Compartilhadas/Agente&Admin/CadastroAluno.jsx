@@ -33,10 +33,11 @@ const CadastroAluno = () => {
   const navigate = useNavigate();
 
   // Estado para armazenar o arquivo Excel selecionado
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFiles = Array.from(e.target.files); 
+    setFiles(selectedFiles);
   };
 
 
@@ -44,13 +45,15 @@ const CadastroAluno = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita o recarregamento da página
 
-    if (!file) {
-      alert('Por favor, selecione um arquivo Excel para enviar.');
+    if (files.length === 0) {
+      alert('Por favor, selecione pelo menos um arquivo Excel.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    files.forEach((file, index) => {
+      formData.append(`files`, file); // Enviando múltiplos arquivos
+    });
 
     try {
       // Envia o arquivo para a API usando fetch
@@ -208,11 +211,12 @@ const CadastroAluno = () => {
                       type="file"
                       accept=".xlsx, .xls"
                       id="upload-file"
+                      multiple
                       onChange={handleFileChange}
                       />
                     <label htmlFor="upload-file">
                       <Button variant="outlined" component="span" fullWidth sx={{ mt: 2, mb: 2 }}>
-                        {file ? file.name : 'Selecionar Arquivo'}
+                      {files.length > 0 ? `${files.length} arquivos selecionados` : 'Selecionar Arquivos'}
                       </Button>
                     </label>
                   </Grid>

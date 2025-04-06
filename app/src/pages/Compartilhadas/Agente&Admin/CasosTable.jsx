@@ -57,11 +57,12 @@ function CasosTable() {
 
     useEffect(() => {
         fetch(rota_base+'/casos', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
+            body: JSON.stringify({})
         })
         .then(response => {
             if (!response.ok) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Grid, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox } from '@mui/material';
+import { Container, Typography, Grid, Paper, Button, FormControl, InputLabel, Select, MenuItem, FormControlLabel, Checkbox, ListItemText } from '@mui/material';
 import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts';
 import { BarChart } from '@mui/x-charts/BarChart';
 import HeaderAdmin from './HeaderAdmin';
@@ -17,106 +17,96 @@ export default function Dashboard() {
   const [urgenciaData, setUrgenciaData] = useState([]);
   const [turmaData, setTurmaData] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedYear, setSelectedYear] = useState("todos");
-  const [selectedTurma, setSelectedTurma] = useState("todos");
-  const [selectedClass, setSelectedClass] = useState("todos");
+  const [selectedYear, setSelectedYear] = useState(["Todos"]);
+  const [selectedTurma, setSelectedTurma] = useState("Todos");
+  const [selectedClass, setSelectedClass] = useState("Todos");
   const cookies = new Cookies();
   const token = cookies.get('token');
 
   useEffect(() => {
-    let url = `${rota_base}/casos`;
-
-    // Adicionar parâmetros se não forem "todos"
-    const params = new URLSearchParams();
-
-    if (selectedYear !== "todos") {
-      params.append('ano', selectedYear);
-    }
+    const fetchCases = () => {
+      const url = `${rota_base}/casos`;
     
-    if (selectedTurma !== "todos") {
-      if(selectedClass !== "todos"){
-        params.append('turma', selectedTurma + selectedClass);
-      }
-      else{
-        params.append('turma', selectedTurma);
-      }
-    }
+      // Criar objeto com os parâmetros
+      const body = {};
     
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-    .then(response => {
-      console.log("Resposta do servidor:", response)
-      if (!response.ok) {
-        throw new Error('Failed to fetch cases');
+      if (!selectedYear.includes("Todos")) {
+        body.ano = selectedYear;
       }
-      return response.json();
-    })
-    .then(data => {
-      setCasos(data.caso);
-      processCaseData(data.caso);
-    })
-    .catch(error => {
-      setError(error.message);
-    });
+    
+      if (selectedTurma !== "Todos") {
+        body.turma = selectedClass !== "Todos" ? selectedTurma + selectedClass : selectedTurma;
+      }
+
+      
+    
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body) // Enviar os parâmetros no corpo da requisição
+      })
+        .then(response => {
+          console.log("Resposta do servidor:", response);
+          if (!response.ok) {
+            throw new Error('Failed to fetch cases');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setCasos(data.caso);
+          processCaseData(data.caso);
+        })
+        .catch(error => {
+          setError(error.message);
+        });
+    };
+
+    fetchCases();
+    
   }, [token, selectedYear, selectedTurma, selectedClass]);
 
 
   const handleGenerateReport = () => {
-    let url = `${rota_base}/casos/relatorio-geral`;
-
-    // Adicionar parâmetros se não forem "todos"
-    const params = new URLSearchParams();
-
-    if (selectedYear !== "todos") {
-      params.append('ano', selectedYear);
+    const url = `${rota_base}/casos/relatorio-geral`;
+  
+    // Criar objeto com os parâmetros
+    const body = {};
+  
+    if (!selectedYear.includes("Todos")) {
+      body.ano = selectedYear;
     }
-    
-    if (selectedTurma !== "todos") {
-      if(selectedClass !== "todos"){
-        params.append('turma', selectedTurma + selectedClass);
-      }
-      else{
-        params.append('turma', selectedTurma);
-      }
+  
+    if (selectedTurma !== "Todos") {
+      body.turma = selectedClass !== "Todos" ? selectedTurma + selectedClass : selectedTurma;
     }
-    
-    if (params.toString()) {
-      url += `?${params.toString()}`;
-    }
-
+  
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
+      body: JSON.stringify(body) // Enviar os parâmetros no corpo da requisição
     })
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to generate report');
         }
-        // Get filename from Content-Disposition header
-        const filename = response.headers.get('Content-Disposition')
-          ?.split('filename=')[1]
-          ?.replace(/["']/g, '');
-          
         return response.blob().then(blob => ({
           blob,
-          filename
+          filename: response.headers.get('Content-Disposition')
+            ?.split('filename=')[1]
+            ?.replace(/["']/g, '')
         }));
       })
       .then(({ blob, filename }) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = filename || 'relatorio.xlsx'; // Use the filename from header or fallback
+        a.download = filename || 'relatorio.xlsx'; // Nome do arquivo
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -126,9 +116,15 @@ export default function Dashboard() {
         alert("Erro ao gerar o relatório: " + error.message);
       });
   };
+  
 
   const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
+    const value = event.target.value;
+    if (value.includes("Todos")) {
+      setSelectedYear(["Todos"]);
+    } else {
+      setSelectedYear(value);
+    }
   };
 
   const handleTurmaChange = (event) => {
@@ -202,28 +198,31 @@ export default function Dashboard() {
           </Grid>
           <Grid item xs={2} style={{ textAlign: "center"}}>
             <FormControl fullWidth size='small'>
-                <InputLabel id="year-select-label">Ano</InputLabel>
+              <InputLabel id="year-select-label">Anos</InputLabel>
                 <Select
-                    labelId="year-select-label"
-                    id="year-select"
-                    size='small'
-
-                    value={selectedYear}
-                    onChange={handleYearChange}
-                    
-                >
-                  <MenuItem value="todos">Todos</MenuItem>
-                     {[...Array(10)].map((_, index) => {
-                    const year = dayjs().year() - index;
-                    return (
-                      <MenuItem key={year} value={year}>
-                        {year}
-                      </MenuItem>
-                      );
-                    })}
-                </Select>
+                labelId="year-select-label"
+                id="year-select"
+                multiple
+                value={selectedYear}
+                onChange={handleYearChange}
+                renderValue={(selected) => selected.join(', ')}
+              >
+                <MenuItem value="Todos">
+                  <Checkbox checked={selectedYear.includes("Todos")} />
+                  <ListItemText primary="Todos" />
+                </MenuItem>
+                {[...Array(10)].map((_, index) => {
+                  const year = dayjs().year() - index;
+                  return (
+                    <MenuItem key={year} value={year} disabled={selectedYear.includes("Todos")}>
+                      <Checkbox checked={selectedYear.includes(year)} />
+                      <ListItemText primary={year} />
+                    </MenuItem>
+                  );
+                })}
+              </Select>
             </FormControl>
-            </Grid>
+          </Grid>
             <Grid item xs={2} style={{ textAlign: "center"}}>
               <FormControl fullWidth size='small'>
                 <InputLabel id="turma-select-label">Turma</InputLabel>
@@ -235,7 +234,7 @@ export default function Dashboard() {
                     onChange={handleTurmaChange}
                     
                 >
-                  <MenuItem value="todos">Todos</MenuItem>
+                  <MenuItem value="Todos">Todos</MenuItem>
                   {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(year => (
                     <MenuItem key={year} value={year}>
                       {year}
@@ -253,10 +252,10 @@ export default function Dashboard() {
                     size='small'
                     value={selectedClass}
                     onChange={handleClassChange}
-                    disabled={selectedTurma === "todos"}
+                    disabled={selectedTurma === "Todos"}
                     
                 >
-                  <MenuItem value="todos">Todos</MenuItem>
+                  <MenuItem value="Todos">Todos</MenuItem>
                   {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map(cls => (
                     <MenuItem key={cls} value={cls}>
                       {cls}

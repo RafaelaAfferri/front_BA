@@ -37,6 +37,7 @@ export default function Casos() {
     const [selectedRowsLig, setSelectedRowsLig] = useState([]);
     const [selectedRowsVis, setSelectedRowsVis] = useState([]);
     const [selectedRowsAtendimento, setSelectedRowsAtendimento] = useState([]);
+    const [selectedRowsTarefas, setSelectedRowsTarefas] = useState([]);
     const [usuario, setUsuario] = useState('');
     const [anchorLig, setAnchorLig] = useState(null);
     const [anchorVis, setAnchorVis] = useState(null);
@@ -45,6 +46,7 @@ export default function Casos() {
     const openVis = Boolean(anchorVis);
     const openAtendimento = Boolean(anchorAtendimento);
     const [selectedYear, setSelectedYear] = useState([dayjs().year()]);
+    const [tarefas, setTarefas] = useState([]);
 
 
     //Criação das colunas para a tabela de ligacoes
@@ -95,6 +97,22 @@ export default function Casos() {
         responsavel: atendimento.responsavel,
         observacao: atendimento.observacao,
     }));
+
+    const columnsTarefas = [
+        { field: 'titulo', headerName: 'Matéria', width: 200 },
+        { field: 'status', headerName: 'Status', width: 200 },
+        { field: 'dataFinal', headerName: 'Data de Entrega', width: 200 },
+        { field: 'observacoes', headerName: 'Descrição', width: 200 },
+    ];
+
+    const rowsTarefas = tarefas.map((tarefa, index) => ({
+        id: index,
+        titulo: tarefa.titulo,
+        status: tarefa.status,
+        dataFinal: tarefa.dataFinal ? new Date(tarefa.dataFinal).toLocaleDateString('pt-BR') : '',
+        observacoes: tarefa.observacoes,
+    }));
+
 
 
 
@@ -162,11 +180,12 @@ export default function Casos() {
             return;
         }
         fetch(rota_base+`/casos?aluno_id=${idAluno}`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
-            }
+            },
+            body: JSON.stringify({})
         })
         .then(response => response.json())
         .then(data => {
@@ -200,6 +219,7 @@ export default function Casos() {
             .then(data => {
                 data.dataNascimento = new Date(data.dataNascimento).toLocaleDateString('pt-BR');
                 setDataAluno(data);
+                setTarefas(data.tarefas);
             })
             .catch(response => {
                 alert('Erro ao achar aluno!');
@@ -248,7 +268,8 @@ export default function Casos() {
                 "usuario": usuario,
                 "ligacoes": selectedRowsLig,
                 "visitas": selectedRowsVis,
-                "atendimentos": selectedRowsAtendimento
+                "atendimentos": selectedRowsAtendimento,
+                "tarefas": selectedRowsTarefas
             })
         })
         .then(response => {
@@ -272,6 +293,7 @@ export default function Casos() {
         setSelectedRowsLig([]);
         setSelectedRowsVis([]);
         setSelectedRowsAtendimento([]);
+        setSelectedRowsTarefas([]);
     }
     
 
@@ -817,6 +839,7 @@ export default function Casos() {
                                     <Tab label="Ligação" value="0" />
                                     <Tab label="Visita" value="1" />
                                     <Tab label="Atendimento aos Pais" value="2" />
+                                    <Tab label="Tarefas" value="3" />
                                 </TabList>
                                 </Box>
                                 <TabPanel value="0" >
@@ -858,6 +881,19 @@ export default function Casos() {
                                             rowSelectionModel={selectedRowsAtendimento.map((row) => row.id)}
                                          />
                                          
+                                    </Box>
+                                </TabPanel>
+                                <TabPanel value="3">
+                                    
+                                    <Box sx={{ height: 400, width: "100%" }}>
+                                        <DataGrid rows={filterDataByYear(rowsTarefas, selectedYear)} columns={columnsTarefas} pageSize={5} checkboxSelection
+                                        onRowSelectionModelChange={(ids) => {
+                                            const auxselectedRowsTarefa= ids.map((id) => rowsTarefas.find((row) => row.id === id));
+                                            selectedRowsTarefas(auxselectedRowsTarefa);
+                                            console.log(selectedRowsAtendimento);
+[]                                          }}
+                                            rowSelectionModel={selectedRowsTarefas.map((row) => row.id)}
+                                         />
                                     </Box>
                                 </TabPanel>
                             </TabContext>
