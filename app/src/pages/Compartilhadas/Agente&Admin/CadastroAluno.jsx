@@ -28,6 +28,7 @@ const CadastroAluno = () => {
   // Recupera o token e a permissão do usuário armazenados nos cookies
   const token = cookies.get('token');
   const permissao = cookies.get('permissao');
+  const [loading, setLoading] = useState(false);
   
   // Hook de navegação do React Router
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const CadastroAluno = () => {
       formData.append(`files`, file); // Enviando múltiplos arquivos
     });
 
+    setLoading(true);
     try {
       // Envia o arquivo para a API usando fetch
       const response = await fetch(rota_base + '/alunoBuscaAtiva', {
@@ -92,6 +94,8 @@ const CadastroAluno = () => {
     } catch (error) {
         console.error("Erro ao enviar o arquivo:", error);
         alert("Erro ao processar a requisição.");
+    } finally {
+      setLoading(false); // Restaura o estado de loading
     }
 };
 
@@ -230,6 +234,11 @@ const CadastroAluno = () => {
                       >
                       Enviar Arquivo
                     </Button>
+                    {loading && (
+                      <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                        Carregando...
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               </Box>

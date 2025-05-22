@@ -97,7 +97,7 @@ function App() {
             <Route path="/casos/:id" element={<Casos />} />
             <Route path="/pendencias" element={<Pendencias />} />
             <Route path="/alterar-senha" element={<AlterarSenha />} />
-            <Route path="/tarefas/:id" element={<AdicionarTarefa />} />
+            <Route path="/tarefas/:id" element={<AdicionarTarefa />} />g
             </>
           )}
 
